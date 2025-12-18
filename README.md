@@ -12,7 +12,10 @@ Want a free subdomain? Here's how:
 4. **Submit a Pull Request**
 5. **Wait for approval** - your subdomain will be live within minutes!
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions.
+📚 **Documentation:**
+- [Quick Reference Guide](QUICKSTART.md) - Fast overview
+- [Contributing Guide](CONTRIBUTING.md) - Detailed instructions
+- [Admin Setup](SETUP.md) - For administrators
 
 ## 📝 Example Subdomain Request
 
