@@ -1,0 +1,61 @@
+name: Validate Subdomain Requests
+
+on:
+  pull_request:
+    paths:
+      - 'domains/*.yaml'
+      - 'domains/*.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Install dependencies
+        run: |
+          pip install pyyaml
+      
+      - name: Validate YAML files
+        run: |
+          python scripts/validate.py
+      
+      - name: Check for modified files only in domains/
+        run: |
+          # Get list of changed files
+          git fetch origin ${{ github.base_ref }}
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          echo "Changed files:"
+          echo "$changed_files"
+          
+          # Check if any files outside domains/ were modified
+          non_domain_files=$(echo "$changed_files" | grep -v '^domains/' || true)
+          
+          if [ -n "$non_domain_files" ]; then
+            echo "❌ Error: This PR modifies files outside the domains/ directory:"
+            echo "$non_domain_files"
+            echo "Please only add or modify YAML files in the domains/ directory"
+            exit 1
+          fi
+          
+          echo "✅ All changes are in the domains/ directory"
+      
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Subdomain request validation passed! An admin will review and approve your request.'
+            })
