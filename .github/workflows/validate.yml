@@ -36,17 +36,24 @@ jobs:
           echo "Changed files:"
           echo "$changed_files"
           
-          # Check if any files outside domains/ were modified
-          non_domain_files=$(echo "$changed_files" | grep -v '^domains/' || true)
+          # Check if any non-YAML files in domains/ or files outside domains/ were modified
+          # Allow YAML files in domains/ directory
+          invalid_files=$(echo "$changed_files" | grep -v '^domains/.*\.ya*ml$' || true)
           
-          if [ -n "$non_domain_files" ]; then
-            echo "❌ Error: This PR modifies files outside the domains/ directory:"
-            echo "$non_domain_files"
-            echo "Please only add or modify YAML files in the domains/ directory"
-            exit 1
+          if [ -n "$invalid_files" ]; then
+            echo "⚠️ Warning: This PR modifies files outside the domains/ directory:"
+            echo "$invalid_files"
+            echo ""
+            echo "For subdomain requests, please only add or modify YAML files in the domains/ directory."
+            echo "If you're making other changes (documentation, scripts, etc.), this warning can be ignored by admins."
           fi
           
-          echo "✅ All changes are in the domains/ directory"
+          # Count YAML files changed
+          yaml_files=$(echo "$changed_files" | grep '^domains/.*\.ya*ml$' || true)
+          yaml_count=$(echo "$yaml_files" | grep -c . || echo "0")
+          
+          echo ""
+          echo "📊 Summary: $yaml_count YAML file(s) in domains/ directory"
       
       - name: Comment on PR
         if: success()
