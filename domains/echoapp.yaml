@@ -18,7 +18,7 @@ description: Personal website and blog
 record_type: CNAME
 
 # Required: DNS record value (IP address for A/AAAA, domain for CNAME, etc.)
-record_value: john-doe.github.io
+record_value: adreamentertainmentcompany-bot.github.io
 
 # Optional: TTL (Time To Live) in seconds, defaults to 3600 (1 hour)
 ttl: 3600
