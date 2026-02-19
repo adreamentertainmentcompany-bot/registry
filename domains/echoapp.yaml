@@ -3,16 +3,16 @@
 # File name should be: <subdomain>.yaml (e.g., example.yaml for example.netref.link)
 
 # Required: The subdomain you want to register
-subdomain: example
+subdomain: echoapp
 
 # Required: Your name or organization name
-owner: John Doe
+owner: Drake Bertrand
 
 # Required: Contact email for administrative purposes
-email: john.doe@example.com
+email: dnm_group2@outlook.com
 
 # Required: Description of how this subdomain will be used
-description: Personal website and blog
+description: Privacy policy
 
 # Required: DNS record type (A, AAAA, CNAME, TXT)
 record_type: CNAME
